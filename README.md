@@ -25,14 +25,17 @@
 
 ## 🚀 Quick Start
 
-### Option 1: Run with NPX (Zero Setup!)
+### Option 1: Install from GitHub Packages 📦
 
 ```bash
-# Launch the interactive Web UI directly:
-npx cargills serve
+# Configure npm to use GitHub Packages for the @nimesh-piyumal scope
+npm config set @nimesh-piyumal:registry https://npm.pkg.github.com
 
-# Or run the MCP Server for your AI assistants:
-npx cargills-mcp
+# Install globally
+npm install -g @nimesh-piyumal/cargills-online-scraper-mcp
+
+# Run CLI or Web Dashboard
+cargills serve
 ```
 
 ---
