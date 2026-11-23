@@ -1,185 +1,104 @@
-# Cargills Online Scraper, Product Search & MCP Server
+# 🛒 Cargills Online Scraper, Product Search & MCP Server 🚀
 
-A production-grade web scraping engine, search API, web dashboard, and Model Context Protocol (MCP) server for [Cargills Online](https://cargillsonline.com) (Sri Lanka's leading online grocery platform).
+> ⚡ Fast, friendly, and production-ready toolset to scrape, explore, and search all food & grocery items from **Cargills Online** (Sri Lanka) — featuring a CLI, Web Dashboard, REST API, and native **Model Context Protocol (MCP)** server for AI agents!
 
-Developed by **Nimesh Piyumal**.
-
----
-
-## Features
-
-- **Full Catalog Scraping**: Scrapes all 25 categories (Vegetables, Fruits, Dairy, Food Cupboard, Beverages, Bakery, Meats, Seafood, Rice, Cooking Essentials, etc.) in under 60 seconds.
-- **Rich Product Metadata**:
-  - Product Name & SKU Code
-  - Selling Price (in LKR) & MRP (Maximum Retail Price)
-  - Discounts & Percentage Off calculations
-  - Packaging Size, Unit Size, and Unit of Measure (UOM)
-  - Category & Food Tagging (`isFood`)
-  - Stock Inventory & Availability
-  - Detailed Description & Nutritional/Health benefits
-  - Direct Image & Web Image URLs
-  - Direct Cargills product page links
-  - Multilingual search keywords
-- **High-Performance Direct API Client**: Bypasses heavy browser automation by interacting directly with the site's encrypted backend services.
-- **Dual Search Capabilities**:
-  - **Offline Search**: Query the scraped local dataset with fuzzy search, price filters, category filters, and multiple sorting options.
-  - **Live Search**: Query the live Cargills Online search endpoint in real time.
-- **Interactive Web Dashboard**: Modern, responsive interface with search, category filtering, product modals, one-click scraping, and CSV/JSON export.
-- **Model Context Protocol (MCP) Server**: Seamless integration with AI agents and assistants (Claude, Cursor, Antigravity, Cline, Windsurf).
-- **Interactive CLI**: Command-line interface for running scrapes, searches, and launching the server.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/)
+[![MCP Ready](https://img.shields.io/badge/MCP-Protocol%202024--11--05-blue.svg)](https://modelcontextprotocol.io/)
+[![Built By](https://img.shields.io/badge/Built%20With%20%E2%9D%A4%EF%B8%8F%20By-Nimesh%20Piyumal-red.svg)](https://github.com/nimesh-piyumal)
 
 ---
 
-## Project Structure
+## ✨ Highlights
 
-```
-.
-├── .agents/
-│   └── mcp_config.json          # Agent-level MCP configuration
-├── data/
-│   ├── cargills_products.json   # Full dataset in JSON format
-│   └── cargills_products.csv    # Full dataset in CSV format
-├── public/
-│   ├── index.html               # Web UI Dashboard
-│   ├── style.css                # Dashboard styling
-│   └── app.js                   # Client-side logic
-├── src/
-│   ├── api.js                   # API Client & AES encryption
-│   ├── scraper.js               # Scraper & data normalizer
-│   ├── search.js                # Search engine (Local & Live)
-│   └── server.js                # Express Web Server & REST API
-├── cli.js                       # Command-line tool
-├── mcp-server.js                # MCP Server entry point
-├── mcp_config.json              # Standard MCP configuration
-├── package.json
-└── README.md
-```
+- ⚡ **Lightning Fast Scraping**: Fetches all 25 categories (3,900+ products, 2,300+ food items) in ~50 seconds via direct API integration.
+- 🥗 **Smart Food Tagging**: Automatically detects and tags food & beverage items (`isFood: true`).
+- 💰 **Deep Price Intelligence**: Captures current selling prices, MRP (regular price), discounts, and percentage-off badges.
+- 📦 **Complete Product Specs**: Unit sizes (kg, g, l, ml), SKU codes, real-time inventory counts, and nutrition/health descriptions.
+- 🔍 **Dual-Mode Search Engine**:
+  - 💾 **Offline Mode**: Blazing fast search over cached local database with category, price range, and in-stock filters.
+  - 🌐 **Live Mode**: Real-time queries sent directly to Cargills Online.
+- 🖥️ **Sleek Web Interface**: Modern, responsive dashboard with product modal popups, live/offline toggle, and CSV/JSON export.
+- 🤖 **Native MCP Server**: Ready to plug into **Claude Desktop**, **Cursor**, **Antigravity**, **Cline**, and **Windsurf**.
 
 ---
 
-## Installation
+## 🚀 Quick Start
 
-### Prerequisites
-- Node.js (v18.0.0 or higher)
-- npm (v9.0.0 or higher)
+### Option 1: Run with NPX (Zero Setup!)
 
-### Setup
 ```bash
+# Launch the interactive Web UI directly:
+npx cargills serve
+
+# Or run the MCP Server for your AI assistants:
+npx cargills-mcp
+```
+
+---
+
+### Option 2: Clone & Run Locally
+
+```bash
+# 1. Clone the repository
 git clone https://github.com/nimesh-piyumal/cargills-online-scraper-mcp.git
 cd cargills-online-scraper-mcp
+
+# 2. Install dependencies
 npm install
-```
 
----
-
-## Usage
-
-### 1. Scraping Products
-
-Run a full scrape across all 25 categories:
-```bash
-npm run scrape
-# or
-node cli.js scrape
-```
-
-Scrape only food categories:
-```bash
-npm run scrape:food
-# or
-node cli.js scrape --food-only
-```
-
-*Data is automatically saved to `data/cargills_products.json` and `data/cargills_products.csv`.*
-
----
-
-### 2. Command Line Search
-
-#### Search Local Dataset:
-```bash
-# Search for soya products
-node cli.js search "soya"
-
-# Search for fruits
-node cli.js search "pineapple"
-
-# Search with category filter and price sorting
-node cli.js search "milk" --category Dairy --sort price_asc
-
-# Search with stock filter
-node cli.js search "chicken" --in-stock
-```
-
-#### Search Live Website:
-```bash
-node cli.js search "fresh milk" --live
-node cli.js search "apple" --live
-```
-
----
-
-### 3. Web Dashboard
-
-Launch the web interface:
-```bash
+# 3. Launch Web Dashboard on http://localhost:3000
 npm start
-# or
-node cli.js serve
 ```
-
-Open your browser at:
-`http://localhost:3000`
-
-The dashboard supports:
-- Instant search with live/offline toggle
-- Category filtering and price range sliders
-- Product cards with stock badges and discount percentages
-- Detailed modal views with descriptions and direct store links
-- One-click scraper execution with animated progress
-- One-click CSV and JSON exports
 
 ---
 
-### 4. Model Context Protocol (MCP) Server
+## 🛠️ Command Line Interface (CLI)
 
-This project includes a native MCP server for AI coding assistants and agents.
+The CLI tool lets you scrape, search, and manage products right from your terminal:
 
-#### Available MCP Tools
+```bash
+# 📥 Scrape full store (all 25 categories)
+npm run scrape
 
-| Tool | Description |
-|---|---|
-| `cargills_search` | Search grocery and food items with keyword, category, price range, stock, and sorting filters. |
-| `cargills_get_product` | Retrieve comprehensive product details by SKU, numeric ID, or name. |
-| `cargills_list_categories` | List all available store categories with product counts and food flags. |
-| `cargills_scrape` | Trigger a background scrape to refresh local data from the live store. |
-| `cargills_get_stats` | Inspect dataset health metrics (total items, food count, in-stock count, price ranges). |
+# 🥗 Scrape only food & grocery items
+npm run scrape:food
 
-#### Available MCP Resources
+# 🔍 Search for products (Local Offline DB)
+node cli.js search "soya"
+node cli.js search "pineapple"
+node cli.js search "fresh milk" --category Dairy --sort price_asc
+node cli.js search "chicken" --in-stock
 
-- `cargills://categories` - Category list in JSON
-- `cargills://stats` - Dataset statistics in JSON
-- `cargills://products/{sku}` - Product details by SKU
+# 🌐 Search live directly on Cargills Online
+node cli.js search "apple" --live
 
-#### MCP Client Configuration
+# 📋 View all available categories
+npm run categories
 
-Add the following to your MCP client configuration file:
-
-**Google Antigravity / Gemini CLI (`mcp_config.json`):**
-```json
-{
-  "mcpServers": {
-    "cargills-online": {
-      "command": "node",
-      "args": [
-        "./mcp-server.js"
-      ]
-    }
-  }
-}
+# 🌐 Start Web UI Server (default: port 3000)
+npm run serve
 ```
 
-**Claude Desktop (`claude_desktop_config.json`):**
+---
+
+## 🤖 Model Context Protocol (MCP) Server
+
+Connect Cargills grocery data directly to your favorite AI models and agents!
+
+### 🧰 Available MCP Tools
+
+| Tool Name | What It Does |
+|---|---|
+| 🔎 `cargills_search` | Search grocery & food items with query, category, price bounds, in-stock check, and sorting. |
+| 🏷️ `cargills_get_product` | Get in-depth specs by SKU, product ID, or item name (nutrition, description, images, direct links). |
+| 📂 `cargills_list_categories` | Retrieve all 25 categories with food flags and total product counts. |
+| 🔄 `cargills_scrape` | Trigger an on-demand background scrape to sync local data with the live website. |
+| 📊 `cargills_get_stats` | Inspect dataset health (total items, food count, stock ratio, price ranges). |
+
+### 🔌 Easy AI Assistant Setup
+
+#### Claude Desktop (`claude_desktop_config.json`)
 ```json
 {
   "mcpServers": {
@@ -193,38 +112,52 @@ Add the following to your MCP client configuration file:
 }
 ```
 
-**Cursor / Cline / Windsurf:**
-- **Name**: `cargills-online`
+#### Cursor & Cline
+- **Server Name**: `cargills-online`
 - **Transport**: `stdio`
 - **Command**: `node`
-- **Args**: `./mcp-server.js`
+- **Arguments**: `./mcp-server.js`
 
-#### Run MCP Server Directly:
-```bash
-npm run mcp
-# or
-node cli.js mcp
+#### Google Antigravity / Gemini CLI (`mcp_config.json`)
+```json
+{
+  "mcpServers": {
+    "cargills-online": {
+      "command": "node",
+      "args": [
+        "./mcp-server.js"
+      ]
+    }
+  }
+}
 ```
 
 ---
 
-### 5. REST API Endpoints
+## 🌐 REST API Reference
 
-| Method | Endpoint | Description |
-|---|---|---|
-| `GET` | `/api/products?q=query&category=Dairy` | Filtered and paginated local product search |
-| `GET` | `/api/search/live?q=query` | Real-time live search against Cargills Online |
-| `GET` | `/api/categories` | Complete list of categories |
-| `GET` | `/api/stats` | Dataset statistics |
-| `POST` | `/api/scrape` | Trigger background scraping task |
-| `GET` | `/api/scrape/status` | Scraping progress and status |
-| `GET` | `/api/export/csv` | Download products as CSV |
-| `GET` | `/api/export/json` | Download products as JSON |
+The built-in Express server exposes a developer-friendly REST API:
+
+- `GET /api/products?q=tea&category=Beverages&sortBy=price_asc` — Search and filter local products
+- `GET /api/search/live?q=soya` — Real-time live search against the store
+- `GET /api/categories` — List all product categories
+- `GET /api/stats` — Summary metrics of the scraped catalog
+- `POST /api/scrape` — Trigger an automated background scrape
+- `GET /api/scrape/status` — Track real-time scraping progress
+- `GET /api/export/csv` — Instant CSV download
+- `GET /api/export/json` — Instant JSON download
 
 ---
 
-## License
+## 👨‍💻 Author
 
-This project is licensed under the MIT License.
+Crafted with care by **Nimesh Piyumal** 🇱🇰
 
-Created by **Nimesh Piyumal**.
+- GitHub: [@nimesh-piyumal](https://github.com/nimesh-piyumal)
+- Project: [cargills-online-scraper-mcp](https://github.com/nimesh-piyumal/cargills-online-scraper-mcp)
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.

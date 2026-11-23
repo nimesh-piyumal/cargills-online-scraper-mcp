@@ -3,6 +3,21 @@
   "version": "1.0.0",
   "description": "Production-grade Cargills Online grocery scraper, product search engine, web dashboard, and Model Context Protocol (MCP) server.",
   "main": "cli.js",
+  "bin": {
+    "cargills": "./cli.js",
+    "cargills-mcp": "./mcp-server.js"
+  },
+  "files": [
+    "cli.js",
+    "mcp-server.js",
+    "mcp_config.json",
+    ".agents/mcp_config.json",
+    "src",
+    "public",
+    "data",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "start": "node src/server.js",
     "serve": "node src/server.js",
@@ -15,6 +30,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/nimesh-piyumal/cargills-online-scraper-mcp.git"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "author": "Nimesh Piyumal",
   "license": "MIT",
