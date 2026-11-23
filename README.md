@@ -25,22 +25,30 @@
 
 ## 🚀 Quick Start
 
-### Option 1: Install from GitHub Packages 📦
+### Option 1: Run with NPX (Zero Setup!) ⚡
 
 ```bash
-# Configure npm to use GitHub Packages for the @nimesh-piyumal scope
-npm config set @nimesh-piyumal:registry https://npm.pkg.github.com
+# Launch the interactive Web UI directly:
+npx cargills serve
 
-# Install globally
-npm install -g @nimesh-piyumal/cargills-online-scraper-mcp
+# Or run the MCP Server for your AI assistants:
+npx cargills-mcp
+```
 
-# Run CLI or Web Dashboard
+---
+
+### Option 2: Install Globally via NPM 📦
+
+```bash
+npm install -g cargills-online-scraper-mcp
+
+# Launch anywhere:
 cargills serve
 ```
 
 ---
 
-### Option 2: Clone & Run Locally
+### Option 3: Clone & Run Locally
 
 ```bash
 # 1. Clone the repository
