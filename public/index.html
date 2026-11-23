@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cargills Online - Food Scraper & Product Explorer</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand">
+        <div class="logo-badge">Cargills</div>
+        <div class="brand-text">
+          <span class="brand-title">Cargills Online</span>
+          <span class="brand-sub">Food Scraper & Explorer</span>
+        </div>
+      </div>
+
+      <!-- Main Search Bar -->
+      <div class="search-box-wrapper">
+        <div class="search-box">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="searchInput" placeholder="Search food items (e.g. Pineapple, Soya, Milk, Chicken, Rice)..." autocomplete="off" />
+          <button id="clearSearchBtn" class="clear-btn" title="Clear">✕</button>
+        </div>
+        <div class="search-mode-toggle">
+          <label class="toggle-label" title="Toggle between local scraped database and live online search">
+            <input type="checkbox" id="liveSearchToggle">
+            <span class="slider"></span>
+            <span class="toggle-text" id="toggleText">Offline DB</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="nav-actions">
+        <button id="scrapeBtn" class="btn btn-primary" title="Trigger full site scrape">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+          </svg>
+          <span>Scrape Site</span>
+        </button>
+        <div class="dropdown">
+          <button class="btn btn-outline" id="exportBtn">
+            <span>Export</span> ▾
+          </button>
+          <div class="dropdown-content">
+            <a href="/api/export/csv" download id="downloadCsvBtn">Download CSV</a>
+            <a href="/api/export/json" download id="downloadJsonBtn">Download JSON</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Scraper Progress Banner (hidden by default) -->
+  <div id="scrapeBanner" class="scrape-banner hidden">
+    <div class="scrape-banner-content">
+      <div class="spinner"></div>
+      <div class="scrape-banner-text">
+        <strong id="scrapeStatusTitle">Scraping cargillsonline.com...</strong>
+        <span id="scrapeStatusMsg">Connecting to server...</span>
+      </div>
+      <div class="progress-bar-container">
+        <div id="scrapeProgressBar" class="progress-bar" style="width: 0%;"></div>
+      </div>
+      <span id="scrapeProgressPercent" class="progress-percent">0%</span>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <main class="main-container">
+    
+    <!-- Sidebar Filters -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h3>Filters</h3>
+        <button id="resetFiltersBtn" class="btn-link">Reset</button>
+      </div>
+
+      <!-- Food Only Toggle -->
+      <div class="filter-group">
+        <label class="checkbox-container">
+          <input type="checkbox" id="foodOnlyFilter" checked>
+          <span class="checkmark"></span>
+          <span class="filter-label-text">Food Items Only 🥗</span>
+        </label>
+      </div>
+
+      <!-- In Stock Only -->
+      <div class="filter-group">
+        <label class="checkbox-container">
+          <input type="checkbox" id="inStockFilter">
+          <span class="checkmark"></span>
+          <span class="filter-label-text">In Stock Only</span>
+        </label>
+      </div>
+
+      <!-- Has Discount Only -->
+      <div class="filter-group">
+        <label class="checkbox-container">
+          <input type="checkbox" id="discountFilter">
+          <span class="checkmark"></span>
+          <span class="filter-label-text">Discounted Items 🔥</span>
+        </label>
+      </div>
+
+      <!-- Price Range Filter -->
+      <div class="filter-group">
+        <label class="group-title">Price Range (Rs.)</label>
+        <div class="price-inputs">
+          <input type="number" id="minPriceInput" placeholder="Min" min="0" />
+          <span class="price-dash">-</span>
+          <input type="number" id="maxPriceInput" placeholder="Max" min="0" />
+        </div>
+      </div>
+
+      <!-- Category Filter -->
+      <div class="filter-group">
+        <label class="group-title">Category</label>
+        <div class="category-list" id="categoryList">
+          <button class="cat-pill active" data-category="All">All Categories</button>
+          <!-- Dynamic category pills will load here -->
+        </div>
+      </div>
+
+      <!-- Data Stats Card -->
+      <div class="stats-card" id="statsCard">
+        <h4>Dataset Stats</h4>
+        <div class="stat-row">
+          <span>Total Products:</span>
+          <strong id="statTotal">Loading...</strong>
+        </div>
+        <div class="stat-row">
+          <span>Food Items:</span>
+          <strong id="statFood">-</strong>
+        </div>
+        <div class="stat-row">
+          <span>Last Updated:</span>
+          <span id="statUpdated">-</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <section class="content-area">
+      <!-- Toolbar -->
+      <div class="content-toolbar">
+        <div class="results-info">
+          <span id="resultsCount">0 products found</span>
+          <span id="activeFilterTag" class="filter-tag hidden"></span>
+        </div>
+        
+        <div class="sort-wrapper">
+          <label for="sortSelect">Sort By:</label>
+          <select id="sortSelect">
+            <option value="relevance">Relevance</option>
+            <option value="price_asc">Price: Low to High</option>
+            <option value="price_desc">Price: High to Low</option>
+            <option value="discount_desc">Biggest Discount (%)</option>
+            <option value="name_asc">Name: A to Z</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="products-grid" id="productsGrid">
+        <!-- Product Cards injected by JS -->
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state hidden" id="emptyState">
+        <div class="empty-icon">🔍</div>
+        <h3>No products found</h3>
+        <p id="emptyStateText">Try adjusting your search terms or filters.</p>
+        <button id="emptyStateScrapeBtn" class="btn btn-primary">Scrape Cargills Products Now</button>
+      </div>
+
+      <!-- Loading State -->
+      <div class="loading-state hidden" id="loadingState">
+        <div class="spinner-large"></div>
+        <p>Fetching food products...</p>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination-wrapper" id="paginationWrapper">
+        <button id="prevPageBtn" class="btn btn-outline" disabled>‹ Previous</button>
+        <span id="pageInfo">Page 1 of 1</span>
+        <button id="nextPageBtn" class="btn btn-outline">Next ›</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Product Details Modal -->
+  <div id="productModal" class="modal hidden">
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal-content">
+      <button class="modal-close" id="modalCloseBtn">&times;</button>
+      <div class="modal-body" id="modalBody">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

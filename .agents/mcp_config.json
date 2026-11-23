@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "cargills-online": {
+      "command": "node",
+      "args": [
+        "./mcp-server.js"
+      ]
+    }
+  }
+}

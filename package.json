@@ -1,0 +1,40 @@
+{
+  "name": "cargills-online-scraper-mcp",
+  "version": "1.0.0",
+  "description": "Production-grade Cargills Online grocery scraper, product search engine, web dashboard, and Model Context Protocol (MCP) server.",
+  "main": "cli.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "serve": "node src/server.js",
+    "scrape": "node cli.js scrape",
+    "scrape:food": "node cli.js scrape --food-only",
+    "search": "node cli.js search",
+    "categories": "node cli.js categories",
+    "mcp": "node mcp-server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nimesh-piyumal/cargills-online-scraper-mcp.git"
+  },
+  "author": "Nimesh Piyumal",
+  "license": "MIT",
+  "keywords": [
+    "cargills",
+    "cargills-online",
+    "scraper",
+    "grocery",
+    "food",
+    "sri-lanka",
+    "mcp",
+    "model-context-protocol",
+    "mcp-server",
+    "nodejs"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "axios": "^1.7.9",
+    "cheerio": "^1.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}
